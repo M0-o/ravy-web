@@ -7,9 +7,9 @@ import { PrismaClient } from "../lib/generated/prisma/client"
 import { PrismaNeonHttp } from "@prisma/adapter-neon"
 import { services } from "../lib/data/services"
 
-const connectionString = process.env.DATABASE_URL_UNPOOLED!
+const connectionString = process.env.RAVY_DATABASE_URL_UNPOOLED!
 if (!connectionString) {
-  console.error("DATABASE_URL_UNPOOLED is not set")
+  console.error("RAVY_DATABASE_URL_UNPOOLED is not set")
   process.exit(1)
 }
 
