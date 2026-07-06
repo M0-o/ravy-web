@@ -4,6 +4,36 @@ import { auth, clerkClient } from "@clerk/nextjs/server"
 import { prisma } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 
+export async function deleteService(serviceId: string) {
+  const { userId } = await auth()
+
+  if (!userId) {
+    return { error: "Non authentifié" }
+  }
+
+  const service = await prisma.service.findUnique({
+    where: { id: serviceId },
+  })
+
+  if (!service) {
+    return { error: "Service introuvable" }
+  }
+
+  if (service.ownerId !== userId) {
+    return { error: "Vous n'êtes pas autorisé à supprimer ce service" }
+  }
+
+  try {
+    await prisma.service.delete({ where: { id: serviceId } })
+    revalidatePath("/")
+    revalidatePath("/dashboard")
+    return { success: true }
+  } catch (err: any) {
+    console.error("[deleteService] prisma error:", err)
+    return { error: err.message || "Erreur lors de la suppression" }
+  }
+}
+
 export async function postService(formData: {
   title: string
   category: string

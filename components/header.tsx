@@ -45,13 +45,21 @@ export default function Header() {
             </Button>
           )}
           {isLoaded && isSignedIn && (
-            <UserButton
-              appearance={{
-                elements: {
-                  userButtonAvatarBox: "h-8 w-8",
-                },
-              }}
-            />
+            <>
+              <Link
+                href="/dashboard"
+                className="hidden md:inline-flex text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              >
+                Tableau de bord
+              </Link>
+              <UserButton
+                appearance={{
+                  elements: {
+                    userButtonAvatarBox: "h-8 w-8",
+                  },
+                }}
+              />
+            </>
           )}
           <button
             className="flex md:hidden p-2 text-foreground"
