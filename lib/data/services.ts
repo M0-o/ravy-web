@@ -1,4 +1,4 @@
-import type { ServiceCategory } from "@/lib/generated/prisma"
+import type { ServiceCategory } from "@/lib/generated/prisma/client"
 
 export type Service = {
   id: string

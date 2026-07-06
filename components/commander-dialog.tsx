@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import type { Service } from "@/lib/generated/prisma"
+import type { Service } from "@/lib/generated/prisma/client"
 
 export default function CommanderDialog({
   service,

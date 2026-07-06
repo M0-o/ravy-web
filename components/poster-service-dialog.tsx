@@ -20,7 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import type { Service } from "@/lib/generated/prisma"
+import type { Service } from "@/lib/generated/prisma/client"
 
 const categories: { value: Service["category"]; label: string }[] = [
   { value: "design", label: "Design graphique" },

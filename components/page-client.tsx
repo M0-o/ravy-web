@@ -9,7 +9,7 @@ import HowItWorks from "@/components/how-it-works"
 import Footer from "@/components/footer"
 import CommanderDialog from "@/components/commander-dialog"
 import PosterServiceDialog from "@/components/poster-service-dialog"
-import type { Service } from "@/lib/generated/prisma"
+import type { Service } from "@/lib/generated/prisma/client"
 
 export default function PageClient({ services }: { services: Service[] }) {
   const [commanderService, setCommanderService] = useState<Service | null>(null)

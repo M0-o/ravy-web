@@ -7,7 +7,7 @@ import {
   GraduationCap,
   Laptop2,
 } from "lucide-react"
-import type { Service } from "@/lib/generated/prisma"
+import type { Service } from "@/lib/generated/prisma/client"
 import { Button } from "@/components/ui/button"
 import {
   Card,
