@@ -1,7 +1,9 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Menu, X } from "lucide-react"
+import { useUser, UserButton } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 
 const navLinks = [
@@ -11,7 +13,8 @@ const navLinks = [
 ]
 
 export default function Header() {
-  const [open, setOpen] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const { isLoaded, isSignedIn } = useUser()
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -36,20 +39,31 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Button variant="outline" size="sm" className="hidden md:inline-flex">
-            Se connecter
-          </Button>
+          {isLoaded && !isSignedIn && (
+            <Button variant="outline" size="sm" className="hidden md:inline-flex" asChild>
+              <Link href="/sign-up">Se connecter</Link>
+            </Button>
+          )}
+          {isLoaded && isSignedIn && (
+            <UserButton
+              appearance={{
+                elements: {
+                  userButtonAvatarBox: "h-8 w-8",
+                },
+              }}
+            />
+          )}
           <button
             className="flex md:hidden p-2 text-foreground"
-            onClick={() => setOpen(!open)}
+            onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Menu"
           >
-            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </div>
 
-      {open && (
+      {mobileOpen && (
         <div className="border-t border-border md:hidden">
           <nav className="flex flex-col gap-2 px-4 py-4">
             {navLinks.map((link) => (
@@ -57,14 +71,16 @@ export default function Header() {
                 key={link.href}
                 href={link.href}
                 className="rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                onClick={() => setOpen(false)}
+                onClick={() => setMobileOpen(false)}
               >
                 {link.label}
               </a>
             ))}
-            <Button variant="outline" size="sm" className="mt-2 w-full">
-              Se connecter
-            </Button>
+            {isLoaded && !isSignedIn && (
+              <Button variant="outline" size="sm" className="mt-2 w-full" asChild>
+                <Link href="/sign-up">Se connecter</Link>
+              </Button>
+            )}
           </nav>
         </div>
       )}

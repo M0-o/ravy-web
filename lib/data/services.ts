@@ -20,6 +20,7 @@ export const services: Service[] = [
     tags: ["logo", "affiche", "branding"],
     priceFrom: 150,
     priceUnit: "projet",
+    studentName: "Sofia El Amrani",
   },
   {
     id: "2",
@@ -29,6 +30,7 @@ export const services: Service[] = [
     tags: ["anglais", "français", "arabe"],
     priceFrom: 80,
     priceUnit: "page",
+    studentName: "Youssef Benali",
   },
   {
     id: "3",
@@ -38,6 +40,7 @@ export const services: Service[] = [
     tags: ["montage", "colorimétrie", "habillage"],
     priceFrom: 200,
     priceUnit: "vidéo",
+    studentName: "Lina Tazi",
   },
   {
     id: "4",
@@ -47,6 +50,7 @@ export const services: Service[] = [
     tags: ["maths", "langues", "sciences"],
     priceFrom: 100,
     priceUnit: "heure",
+    studentName: "Amine El Fassi",
   },
   {
     id: "5",
@@ -56,5 +60,6 @@ export const services: Service[] = [
     tags: ["saisie", "documents", "support"],
     priceFrom: 120,
     priceUnit: "tâche",
+    studentName: "Inès Belhaj",
   },
 ]

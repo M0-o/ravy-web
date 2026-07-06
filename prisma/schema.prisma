@@ -24,5 +24,7 @@ model Service {
   priceFrom   Int
   priceUnit   String
   studentName String?
+  ownerId     String?
+  imageUrl    String?
   createdAt   DateTime        @default(now())
 }

@@ -1,8 +1,16 @@
 "use client"
 
+import Link from "next/link"
+import { useUser } from "@clerk/nextjs"
 import { Button } from "@/components/ui/button"
 
 export default function Hero({ onPosterService }: { onPosterService: () => void }) {
+  const { isLoaded, isSignedIn, user } = useUser()
+  const role = user?.publicMetadata?.role as string | undefined
+
+  const showPoster = !isLoaded || !isSignedIn || role === "student"
+  const showCommander = !isLoaded || !isSignedIn || role === "client"
+
   return (
     <section className="relative overflow-hidden">
       <div className="mx-auto max-w-6xl px-4 pb-20 pt-16 sm:px-6 sm:pt-24 lg:pt-32">
@@ -25,12 +33,20 @@ export default function Hero({ onPosterService }: { onPosterService: () => void 
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <Button size="lg" asChild>
-              <a href="#services">Découvrir les services</a>
-            </Button>
-            <Button size="lg" variant="outline" onClick={onPosterService}>
-              Poster un service
-            </Button>
+            {showCommander && (
+              <Button size="lg" asChild>
+                {isSignedIn && role === "client" ? (
+                  <a href="#services">Découvrir les services</a>
+                ) : (
+                  <Link href="/sign-up">Découvrir les services</Link>
+                )}
+              </Button>
+            )}
+            {showPoster && (
+              <Button size="lg" variant="outline" onClick={onPosterService}>
+                Poster un service
+              </Button>
+            )}
           </div>
         </div>
       </div>
