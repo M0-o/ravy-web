@@ -123,7 +123,7 @@ export default function PosterServiceDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-3xl">
         {submitted ? (
           <div className="flex flex-col items-center gap-4 py-8 text-center">
             <CheckCircle2 className="h-12 w-12 text-accent" />
@@ -143,149 +143,153 @@ export default function PosterServiceDialog({
                 Proposez votre service aux particuliers et entreprises.
               </DialogDescription>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="titre">Titre du service</Label>
-                <Input
-                  id="titre"
-                  placeholder="ex: Création de logo professionnel"
-                  required
-                  value={form.titre}
-                  onChange={(e) => setForm({ ...form, titre: e.target.value })}
-                />
-              </div>
+            <form onSubmit={handleSubmit}>
+              <div className="flex gap-6">
+                <div className="flex-1 space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="titre">Titre du service</Label>
+                    <Input
+                      id="titre"
+                      placeholder="ex: Création de logo professionnel"
+                      required
+                      value={form.titre}
+                      onChange={(e) => setForm({ ...form, titre: e.target.value })}
+                    />
+                  </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="categorie">Catégorie</Label>
-                <Select
-                  value={form.categorie}
-                  onValueChange={(value) => setForm({ ...form, categorie: value })}
-                  required
-                >
-                  <SelectTrigger id="categorie">
-                    <SelectValue placeholder="Sélectionnez une catégorie" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((cat) => (
-                      <SelectItem key={cat.value} value={cat.value}>
-                        {cat.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="categorie">Catégorie</Label>
+                    <Select
+                      value={form.categorie}
+                      onValueChange={(value) => setForm({ ...form, categorie: value })}
+                      required
+                    >
+                      <SelectTrigger id="categorie">
+                        <SelectValue placeholder="Sélectionnez une catégorie" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categories.map((cat) => (
+                          <SelectItem key={cat.value} value={cat.value}>
+                            {cat.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="description">Description</Label>
-                <Textarea
-                  id="description"
-                  placeholder="Décrivez ce que vous proposez..."
-                  rows={3}
-                  value={form.description}
-                  onChange={(e) => setForm({ ...form, description: e.target.value })}
-                />
-              </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="description">Description</Label>
+                    <Textarea
+                      id="description"
+                      placeholder="Décrivez ce que vous proposez..."
+                      rows={3}
+                      value={form.description}
+                      onChange={(e) => setForm({ ...form, description: e.target.value })}
+                    />
+                  </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="prix">Prix de départ (MAD)</Label>
-                  <Input
-                    id="prix"
-                    type="number"
-                    min={0}
-                    placeholder="150"
-                    required
-                    value={form.prix}
-                    onChange={(e) => setForm({ ...form, prix: e.target.value })}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="prix">Prix de départ (MAD)</Label>
+                      <Input
+                        id="prix"
+                        type="number"
+                        min={0}
+                        placeholder="150"
+                        required
+                        value={form.prix}
+                        onChange={(e) => setForm({ ...form, prix: e.target.value })}
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="unite">Unité</Label>
+                      <Select
+                        value={form.unite}
+                        onValueChange={(value) => setForm({ ...form, unite: value })}
+                      >
+                        <SelectTrigger id="unite">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {priceUnits.map((unit) => (
+                            <SelectItem key={unit} value={unit}>
+                              / {unit}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="tags">Tags (séparés par des virgules)</Label>
+                    <Input
+                      id="tags"
+                      placeholder="ex: logo, branding, moderne"
+                      value={form.tags}
+                      onChange={(e) => setForm({ ...form, tags: e.target.value })}
+                    />
+                  </div>
+                </div>
+
+                <div className="w-56 shrink-0 space-y-2">
+                  <Label>Image (optionnel)</Label>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    disabled={isUploading}
+                    onChange={handleFileChange}
                   />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="unite">Unité</Label>
-                  <Select
-                    value={form.unite}
-                    onValueChange={(value) => setForm({ ...form, unite: value })}
+                  <div
+                    className={`flex cursor-pointer items-center justify-center rounded-xl border-2 border-dashed transition-colors h-44 ${
+                      isUploading
+                        ? "cursor-not-allowed border-muted-foreground/30 bg-muted/20"
+                        : imageUrl
+                          ? "border-accent bg-accent/5"
+                          : "border-border bg-muted/30 hover:bg-muted/50"
+                    }`}
+                    onClick={() => {
+                      if (!isUploading) fileInputRef.current?.click()
+                    }}
                   >
-                    <SelectTrigger id="unite">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {priceUnits.map((unit) => (
-                        <SelectItem key={unit} value={unit}>
-                          / {unit}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="tags">Tags (séparés par des virgules)</Label>
-                <Input
-                  id="tags"
-                  placeholder="ex: logo, branding, moderne"
-                  value={form.tags}
-                  onChange={(e) => setForm({ ...form, tags: e.target.value })}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Image (optionnel)</Label>
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="image/*"
-                  className="hidden"
-                  disabled={isUploading}
-                  onChange={handleFileChange}
-                />
-                <div
-                  className={`flex cursor-pointer items-center justify-center rounded-xl border-2 border-dashed p-8 transition-colors ${
-                    isUploading
-                      ? "cursor-not-allowed border-muted-foreground/30 bg-muted/20"
-                      : imageUrl
-                        ? "border-accent bg-accent/5"
-                        : "border-border bg-muted/30 hover:bg-muted/50"
-                  }`}
-                  onClick={() => {
-                    if (!isUploading) fileInputRef.current?.click()
-                  }}
-                >
-                  <div className="flex flex-col items-center gap-2 text-center">
-                    {isUploading ? (
-                      <>
-                        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                        <span className="text-sm font-medium text-muted-foreground">
-                          Téléchargement en cours...
-                        </span>
-                      </>
-                    ) : imageUrl ? (
-                      <>
-                        <Upload className="h-6 w-6 text-accent" />
-                        <span className="text-sm font-medium text-accent">
-                          ✓ Image téléchargée
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <Upload className="h-6 w-6 text-muted-foreground" />
-                        <span className="text-sm font-medium text-muted-foreground">
-                          Cliquez pour ajouter une image
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                          PNG, JPG (max 4 Mo)
-                        </span>
-                      </>
-                    )}
+                    <div className="flex flex-col items-center gap-2 text-center px-4">
+                      {isUploading ? (
+                        <>
+                          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                          <span className="text-sm font-medium text-muted-foreground">
+                            Téléchargement...
+                          </span>
+                        </>
+                      ) : imageUrl ? (
+                        <>
+                          <Upload className="h-6 w-6 text-accent" />
+                          <span className="text-sm font-medium text-accent">
+                            ✓ Image téléchargée
+                          </span>
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="h-6 w-6 text-muted-foreground" />
+                          <span className="text-sm font-medium text-muted-foreground">
+                            Ajouter une image
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            PNG, JPG (max 4 Mo)
+                          </span>
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
 
               {error && (
-                <p className="text-sm text-destructive">{error}</p>
+                <p className="mt-4 text-sm text-destructive">{error}</p>
               )}
 
-              <Button type="submit" className="w-full" disabled={isUploading}>
+              <Button type="submit" className="mt-4 w-full" disabled={isUploading}>
                 {isUploading ? "Téléchargement en cours..." : "Publier le service"}
               </Button>
             </form>

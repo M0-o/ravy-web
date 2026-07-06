@@ -2,14 +2,26 @@
 
 import Link from "next/link"
 import { useUser } from "@clerk/nextjs"
+import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 
 export default function Hero({ onPosterService }: { onPosterService: () => void }) {
   const { isLoaded, isSignedIn, user } = useUser()
   const role = user?.publicMetadata?.role as string | undefined
 
-  const showPoster = !isLoaded || !isSignedIn || role === "student"
-  const showCommander = !isLoaded || !isSignedIn || role === "client"
+  const showPoster = isLoaded && isSignedIn && role === "student"
+  const showCommander = isLoaded && isSignedIn && role === "client"
+
+  const handlePosterClick = () => {
+    if (!isSignedIn) {
+      toast("Connectez-vous pour poster un service", {
+        description: "Créez un compte étudiant pour proposer vos services",
+        action: { label: "S'inscrire", onClick: () => { window.location.href = "/sign-up" } },
+      })
+      return
+    }
+    onPosterService()
+  }
 
   return (
     <section className="relative overflow-hidden">
@@ -33,13 +45,19 @@ export default function Hero({ onPosterService }: { onPosterService: () => void 
           </p>
 
           <div className="mt-8 flex flex-wrap justify-center gap-4">
+            {!isSignedIn && (
+              <>
+                <Button size="lg" asChild>
+                  <Link href="/sign-up">Découvrir les services</Link>
+                </Button>
+                <Button size="lg" variant="outline" onClick={handlePosterClick}>
+                  Poster un service
+                </Button>
+              </>
+            )}
             {showCommander && (
               <Button size="lg" asChild>
-                {isSignedIn && role === "client" ? (
-                  <a href="#services">Découvrir les services</a>
-                ) : (
-                  <Link href="/sign-up">Découvrir les services</Link>
-                )}
+                <a href="#services">Découvrir les services</a>
               </Button>
             )}
             {showPoster && (

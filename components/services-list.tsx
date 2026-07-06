@@ -8,6 +8,7 @@ import {
   GraduationCap,
   Laptop2,
 } from "lucide-react"
+import { toast } from "sonner"
 import type { Service } from "@/lib/generated/prisma/client"
 import { Button } from "@/components/ui/button"
 import {
@@ -35,7 +36,18 @@ export default function ServicesList({
 }) {
   const { isLoaded, isSignedIn, user } = useUser()
   const role = user?.publicMetadata?.role as string | undefined
-  const showCommander = !isLoaded || !isSignedIn || role === "client"
+  const showCommander = isLoaded && isSignedIn && role === "client"
+
+  const handleCommander = (service: Service) => {
+    if (!isSignedIn) {
+      toast("Connectez-vous pour commander un service", {
+        description: "Créez un compte client pour passer commande",
+        action: { label: "S'inscrire", onClick: () => { window.location.href = "/sign-up" } },
+      })
+      return
+    }
+    onCommander(service)
+  }
 
   return (
     <section id="services" className="scroll-mt-20">
@@ -102,7 +114,7 @@ export default function ServicesList({
                   <span className="text-muted-foreground"> / {service.priceUnit}</span>
                 </span>
                 {showCommander && (
-                  <Button size="sm" onClick={() => onCommander(service)}>
+                  <Button size="sm" onClick={() => handleCommander(service)}>
                     Commander
                   </Button>
                 )}

@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import type { Service } from "@/lib/generated/prisma/client"
+import { createOrder } from "@/app/actions/orders"
 
 export default function CommanderDialog({
   service,
@@ -25,12 +26,22 @@ export default function CommanderDialog({
   onOpenChange: (open: boolean) => void
 }) {
   const [submitted, setSubmitted] = useState(false)
-  const [form, setForm] = useState({ nom: "", email: "", message: "" })
+  const [error, setError] = useState<string | null>(null)
 
   if (!service) return null
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setError(null)
+
+    const formData = new FormData(e.currentTarget)
+    const result = await createOrder(service.id, formData)
+
+    if (result.error) {
+      setError(result.error)
+      return
+    }
+
     setSubmitted(true)
   }
 
@@ -38,7 +49,7 @@ export default function CommanderDialog({
     onOpenChange(false)
     setTimeout(() => {
       setSubmitted(false)
-      setForm({ nom: "", email: "", message: "" })
+      setError(null)
     }, 200)
   }
 
@@ -48,9 +59,9 @@ export default function CommanderDialog({
         {submitted ? (
           <div className="flex flex-col items-center gap-4 py-8 text-center">
             <CheckCircle2 className="h-12 w-12 text-accent" />
-            <DialogTitle>Demande envoyée !</DialogTitle>
+            <DialogTitle>Commande envoyée !</DialogTitle>
             <DialogDescription>
-              Votre demande pour &laquo;&nbsp;{service.title}&nbsp;&raquo; a bien été reçue.
+              Votre commande pour &laquo;&nbsp;{service.title}&nbsp;&raquo; a bien été reçue.
               L&apos;étudiant vous contactera dans les plus brefs délais.
             </DialogDescription>
             <Button onClick={handleClose} className="mt-2">
@@ -70,33 +81,31 @@ export default function CommanderDialog({
                 <Label htmlFor="nom">Nom complet</Label>
                 <Input
                   id="nom"
+                  name="nom"
                   placeholder="Votre nom"
                   required
-                  value={form.nom}
-                  onChange={(e) => setForm({ ...form, nom: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="votre@email.com"
                   required
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="message">Message / Brief</Label>
                 <Textarea
                   id="message"
+                  name="message"
                   placeholder="Décrivez votre besoin en quelques lignes..."
                   rows={4}
-                  value={form.message}
-                  onChange={(e) => setForm({ ...form, message: e.target.value })}
                 />
               </div>
+              {error && <p className="text-sm text-destructive">{error}</p>}
               <Button type="submit" className="w-full">
                 Envoyer la demande
               </Button>

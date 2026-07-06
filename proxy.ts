@@ -14,14 +14,20 @@ export default clerkMiddleware(async (auth, req) => {
     return authObj.redirectToSignIn()
   }
 
-  if (userId && isOnboardingRoute(req)) {
+  if (userId) {
     const metadata = authObj.sessionClaims?.metadata as
       | { role?: string }
       | undefined
-    console.log("[middleware] onboarding route, role=", metadata?.role)
-    if (metadata?.role) {
+    const hasRole = !!metadata?.role
+
+    if (hasRole && isOnboardingRoute(req)) {
       console.log("[middleware] role already set, redirecting to /")
       return Response.redirect(new URL("/", req.url))
+    }
+
+    if (!hasRole && !isOnboardingRoute(req)) {
+      console.log("[middleware] no role set, redirecting to /onboarding")
+      return Response.redirect(new URL("/onboarding", req.url))
     }
   }
 })

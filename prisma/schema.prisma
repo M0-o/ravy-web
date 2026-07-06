@@ -27,4 +27,16 @@ model Service {
   ownerId     String?
   imageUrl    String?
   createdAt   DateTime        @default(now())
+  orders      Order[]
+}
+
+model Order {
+  id        String   @id @default(cuid())
+  serviceId String
+  service   Service  @relation(fields: [serviceId], references: [id])
+  clientId  String
+  studentId String
+  status    String   @default("pending")
+  message   String?
+  createdAt DateTime @default(now())
 }
