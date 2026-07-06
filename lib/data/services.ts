@@ -1,13 +1,15 @@
+import type { ServiceCategory } from "@/lib/generated/prisma"
+
 export type Service = {
-  id: string;
-  category: 'design' | 'traduction' | 'montage-video' | 'cours' | 'assistance';
-  title: string;
-  description: string;
-  tags: string[];
-  priceFrom: number;
-  priceUnit: "projet" | "page" | "vidéo" | "heure" | "tâche";
-  studentName?: string;
-};
+  id: string
+  category: ServiceCategory
+  title: string
+  description: string
+  tags: string[]
+  priceFrom: number
+  priceUnit: string
+  studentName?: string | null
+}
 
 export const services: Service[] = [
   {
@@ -30,7 +32,7 @@ export const services: Service[] = [
   },
   {
     id: "3",
-    category: "montage-video",
+    category: "montage_video",
     title: "Montage vidéo",
     description: "Montage, colorimétrie et habillage de vos vidéos pour réseaux sociaux, projets ou événements.",
     tags: ["montage", "colorimétrie", "habillage"],
@@ -55,4 +57,4 @@ export const services: Service[] = [
     priceFrom: 120,
     priceUnit: "tâche",
   },
-];
+]

@@ -7,7 +7,7 @@ import {
   GraduationCap,
   Laptop2,
 } from "lucide-react"
-import { services, type Service } from "@/lib/data/services"
+import type { Service } from "@/lib/generated/prisma"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -17,15 +17,21 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-const categoryIcons: Record<Service["category"], React.ReactNode> = {
+const categoryIcons: Record<string, React.ReactNode> = {
   design: <Palette className="h-6 w-6" />,
   traduction: <Languages className="h-6 w-6" />,
-  "montage-video": <Clapperboard className="h-6 w-6" />,
+  montage_video: <Clapperboard className="h-6 w-6" />,
   cours: <GraduationCap className="h-6 w-6" />,
   assistance: <Laptop2 className="h-6 w-6" />,
 }
 
-export default function ServicesGrid({ onCommander }: { onCommander: (service: Service) => void }) {
+export default function ServicesList({
+  services,
+  onCommander,
+}: {
+  services: Service[]
+  onCommander: (service: Service) => void
+}) {
   return (
     <section id="services" className="scroll-mt-20">
       <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-24">

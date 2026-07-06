@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum ServiceCategory {
+  design
+  traduction
+  montage_video
+  cours
+  assistance
+}
+
+model Service {
+  id          String          @id @default(uuid())
+  category    ServiceCategory
+  title       String
+  description String
+  tags        String[]
+  priceFrom   Int
+  priceUnit   String
+  studentName String?
+  createdAt   DateTime        @default(now())
+}

@@ -20,12 +20,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import type { Service } from "@/lib/data/services"
+import type { Service } from "@/lib/generated/prisma"
 
 const categories: { value: Service["category"]; label: string }[] = [
   { value: "design", label: "Design graphique" },
   { value: "traduction", label: "Traduction" },
-  { value: "montage-video", label: "Montage vidéo" },
+  { value: "montage_video", label: "Montage vidéo" },
   { value: "cours", label: "Cours particuliers" },
   { value: "assistance", label: "Assistance digitale" },
 ]
