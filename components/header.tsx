@@ -20,10 +20,12 @@ export default function Header() {
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6">
         <a href="/" className="flex items-center gap-2 text-lg font-bold tracking-tight">
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-accent-foreground text-sm font-bold">
-            M
-          </span>
-          MarketPlace ALL
+          <img
+            src="/logo.svg"
+            alt="APO marketplace"
+            className="h-9 w-auto rounded-lg"
+          />
+          APO marketplace
         </a>
 
         <nav className="hidden items-center gap-8 md:flex">

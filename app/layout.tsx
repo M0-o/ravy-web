@@ -15,9 +15,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MarketPlace ALL — Services étudiants à Casablanca",
+  title: "APO marketplace — Services étudiants à Casablanca",
   description:
     "La plateforme qui connecte particuliers et entreprises avec des étudiants qualifiés proposant des services créatifs et numériques à prix accessibles.",
+  icons: [{ rel: "icon", url: "/logo.svg" }],
 };
 
 export default function RootLayout({

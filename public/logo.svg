@@ -1,0 +1,20 @@
+<svg width="562" height="562" viewBox="0 0 562 562" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF6F91"/>
+      <stop offset="50%" stop-color="#FF7A5C"/>
+      <stop offset="100%" stop-color="#FF9A56"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="6" y="6" width="550" height="550" rx="60" ry="60" fill="url(#bgGradient)"/>
+
+  <text x="50%" y="52%"
+        font-family="Arial, Helvetica, sans-serif"
+        font-weight="800"
+        font-size="150"
+        fill="#262626"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        letter-spacing="2">APO</text>
+</svg>
